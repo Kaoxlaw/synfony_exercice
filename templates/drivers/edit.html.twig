@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Drivers{% endblock %}
+
+{% block body %}
+    <h1>Edit Drivers</h1>
+
+    {{ include('drivers/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('drivers_index') }}">back to list</a>
+
+    {{ include('drivers/_delete_form.html.twig') }}
+{% endblock %}

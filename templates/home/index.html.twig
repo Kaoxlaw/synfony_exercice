@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block body %}
+<br>
+<hr>
+{% set variable = 'I\'m a variable define in Twig' %}
+
+{{ variable }}
+
+<br>
+<hr>
+{% set tableau = ['Naruto','Uzumaki'] %}
+
+{% for nom in tableau %}
+{{ nom }}
+{% endfor %}
+
+{% endblock %}

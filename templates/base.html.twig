@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
+        <link rel="stylesheet" type="text/css" href="{{asset('./css/bootstrap.min.css')}}" >
+    </head>
+    <body>
+        {% block header %}
+            Je suis header!
+        {% endblock %}
+
+        {% block body %}
+        <hr>
+            I'am the body of base.html.twig
+        <hr>
+        {% endblock %}
+
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

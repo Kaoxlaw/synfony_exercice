@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Drivers{% endblock %}
+
+{% block body %}
+    <h1>Drivers</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ driver.id }}</td>
+            </tr>
+            <tr>
+                <th>Firstname</th>
+                <td>{{ driver.firstname }}</td>
+            </tr>
+            <tr>
+                <th>Lastname</th>
+                <td>{{ driver.lastname }}</td>
+            </tr>
+            <tr>
+                <th>Age</th>
+                <td>{{ driver.age }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('drivers_index') }}">back to list</a>
+
+    <a href="{{ path('drivers_edit', {'id': driver.id}) }}">edit</a>
+
+    {{ include('drivers/_delete_form.html.twig') }}
+{% endblock %}
