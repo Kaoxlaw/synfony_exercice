@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\PostRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -38,14 +39,19 @@ class Post
     private $created_at;
 
     /**
-     * @ORM\Column(type="string", length=50)
-     */
-    private $author;
-
-    /**
      * @ORM\Column(type="text")
      */
     private $image;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts")
+     */
+    private $user;
+
+    public function __construct()
+    {
+        $this->created_at = new \DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -100,18 +106,6 @@ class Post
         return $this;
     }
 
-    public function getAuthor(): ?string
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(string $author): self
-    {
-        $this->author = $author;
-
-        return $this;
-    }
-
     public function getImage(): ?string
     {
         return $this->image;
@@ -120,6 +114,18 @@ class Post
     public function setImage(string $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
