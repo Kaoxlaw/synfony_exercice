@@ -2,28 +2,23 @@
 
 namespace App\Form;
 
-use App\Entity\Post;
+use App\Entity\Content;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use Vich\UploaderBundle\Form\Type\VichImageType;
-
-class PostType extends AbstractType
+class ContentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title')
-            ->add('resume')
-            ->add('content')
-            ->add('imageFile', VichImageType::class);
+            ->add('comment');
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Post::class,
+            'data_class' => Content::class,
         ]);
     }
 }

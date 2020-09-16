@@ -29,7 +29,7 @@
             </tr>
             <tr>
                 <th>Author</th>
-                <td>{{ post.author }}</td>
+                <td>{{ post.user }}</td>
             </tr>
             <tr>
                 <th>Image</th>
@@ -43,4 +43,23 @@
     <a href="{{ path('post_edit', {'id': post.id}) }}">edit</a>
 
     {{ include('post/_delete_form.html.twig') }}
+
+    <hr><hr>
+    <h1>Add Comment</h1>
+    <div>
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn">{{ button_label|default('Save') }}</button>
+    {{ form_end(form) }}
+    </div>
+
+    <div>
+    {% for content in list_content %}
+        <i>Posté par: {{ content.user }}</i>
+        <hr><hr>
+        <p>{{ content.comment }}</p>
+
+    {% endfor %}
+    </div>
+
 {% endblock %}

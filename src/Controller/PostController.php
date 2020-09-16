@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Post;
 use App\Form\PostType;
+use App\Entity\Content;
+use App\Form\ContentType;
 use App\Repository\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,13 +60,38 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="post_show", methods={"GET"})
+     * @Route("/{id}", name="post_show", methods={"GET", "POST"})
      */
-    public function show(Post $post): Response
+    public function show(Post $post, Request $request): Response
     {
+        $content = new Content();
+        $form = $this->createForm(ContentType::class, $content);
+        $form->handleRequest($request);
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $content->setUser($this->getUser());
+            $content->setPost($post);
+
+            $entityManager->persist($content);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('post_show', ['id' => $post->getId()]);
+        }
+
+        $list_content = $entityManager->getRepository('App:Content')->findByPost($post);
+
+
         return $this->render('post/show.html.twig', [
             'post' => $post,
+            'form' => $form->createView(),
+            'list_content' => $list_content,
         ]);
+        // return $this->render('post/show.html.twig', [
+        //     'post' => $post,
+        // ]);
     }
 
     /**

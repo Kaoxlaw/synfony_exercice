@@ -53,9 +53,15 @@ class User implements UserInterface
      */
     private $posts;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Content::class, mappedBy="user")
+     */
+    private $post;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
+        $this->post = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -194,5 +200,13 @@ class User implements UserInterface
     public function __toString()
     {
         return $this->firstname . " " . $this->lastname;
+    }
+
+    /**
+     * @return Collection|Content[]
+     */
+    public function getPost(): Collection
+    {
+        return $this->post;
     }
 }

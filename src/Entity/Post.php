@@ -4,9 +4,15 @@ namespace App\Entity;
 
 use App\Repository\PostRepository;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
+ * @ORM\Entity
+ * @Vich\Uploadable
  * @ORM\Entity(repositoryClass=PostRepository::class)
  */
 class Post
@@ -44,13 +50,25 @@ class Post
     private $image;
 
     /**
+     * @Vich\UploadableField(mapping="post_images", fileNameProperty="image")
+     * @var File
+     */
+    private $imageFile;
+
+    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts")
      */
     private $user;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Content::class, mappedBy="post")
+     */
+    private $contents;
+
     public function __construct()
     {
         $this->created_at = new \DateTime();
+        $this->contents = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -118,6 +136,16 @@ class Post
         return $this;
     }
 
+    public function setImageFile(File $image = null)
+    {
+        $this->imageFile = $image;
+    }
+
+    public function getImageFile()
+    {
+        return $this->imageFile;
+    }
+
     public function getUser(): ?User
     {
         return $this->user;
@@ -128,5 +156,41 @@ class Post
         $this->user = $user;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Content[]
+     */
+    public function getContents(): Collection
+    {
+        return $this->contents;
+    }
+
+    public function addContent(Content $content): self
+    {
+        if (!$this->contents->contains($content)) {
+            $this->contents[] = $content;
+            $content->setPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContent(Content $content): self
+    {
+        if ($this->contents->contains($content)) {
+            $this->contents->removeElement($content);
+            // set the owning side to null (unless already changed)
+            if ($content->getPost() === $this) {
+                $content->setPost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->title;
     }
 }
